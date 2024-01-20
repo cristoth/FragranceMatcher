@@ -1,0 +1,313 @@
+{% extends "perfume/base.html" %}
+{% load crispy_forms_tags %}
+<!-- {% load static %} -->
+
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %} 
+
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}  <!--  added security for DJANGO  -->
+        <fieldset class="form-group">
+            <!-- <legend class="border-bottom mb-4">Search fragrance compatiblities:</legend> -->
+            <legend class="mb-2">Search fragrance compatibilities:</legend>
+            <!-- {{ ingr_search_form|crispy }}   -->
+            <!-- <label>Search fragrance compatibilities: <label> -->
+            <div class="d-flex">
+                <select id="selected-id" name="fragrance">
+                    <option disabled selected> -- select an option -- </option>
+                    {% for i in ingr_search %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-group text-end ms-2">
+                    <input id="search" type="submit" class="btn btn-primary" value="Search" name="search-form" disabled/>
+                </div>
+            </div>
+        </fieldset>
+    </form> 
+
+    <div class="row mt-3">
+        <div class="col"><hr></div>
+        <div class="col-auto my-auto">OR</div>
+        <div class="col"><hr></div>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}  <!--  added security for DJANGO  -->
+        <fieldset class="form-group">
+            <legend class="mb-2 mt-3">Test fragrances compatibility:</legend>
+            <!-- {{ ingr_search_form|crispy }}   -->
+            <!-- <label>Search fragrance compatibilities: <label> -->
+            <div class="d-flex">
+                <select id="ingr1-id" name="fragrance1" onchange="changebutton()">
+                    <option disabled selected> -- select 1st option -- </option>
+                    {% for i in ingr_search %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+                <select id="ingr2-id" name="fragrance2" class="ms-2" onchange="changebutton()">
+                    <option disabled selected> -- select 2nd option -- </option>
+                    {% for i in ingr_search %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-group text-end ms-2">
+                    <input id="test" type="submit" class="btn btn-primary" value="Test" name="test-form" disabled/>
+                </div>
+            </div>
+        </fieldset>
+    </form> 
+</div>
+
+{% if ingr.name %}
+<article class="media content-section">
+    <h3 class="mb-4">Compatible with <em>{{ ingr }}</em></h3>
+    {% if exists %}
+    <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <!-- <th scope="col">Cals</th>
+            <th scope="col">Protein</th>
+            <th scope="col">Carb</th>
+            <th scope="col">Fat</th>
+            <th scope="col">Sugar</th> -->
+            <th scope="col">Compatibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">{{ ingr }}</th>
+            <!-- <td>{{ ingr.cals }}</td>
+            <td>{{ ingr.protein }}</td>
+            <td>{{ ingr.carb }}</td>
+            <td>{{ ingr.fat }}</td>
+            <td>{{ ingr.sugar }}</td> -->
+            <td></td>
+          </tr>
+          {% for ing, comp in similar %}
+          <tr>
+            <th scope="row">{{ ing.name }}</th>
+            <!-- <td>
+                {% if ingr.cals > ing.cals %}
+                <span class="text-success">
+                    <i class="fa fa-caret-down me-1"></i>
+                {% else %}
+                <span class="text-danger">
+                    <i class="fa fa-caret-up me-1"></i>
+                {% endif %}
+                <span>{{ ing.cals }}</span></span>
+            </td>
+            <td>
+                {% if ingr.protein > ing.protein %}
+                <span class="text-danger">
+                    <i class="fa fa-caret-down me-1"></i>
+                {% else %}
+                <span class="text-success">
+                    <i class="fa fa-caret-up me-1"></i>
+                {% endif %}
+                <span>{{ ing.protein }}</span></span>
+            </td>
+            <td>
+                {% if ingr.carb > ing.carb %}
+                <span class="text-success">
+                    <i class="fa fa-caret-down me-1"></i>
+                {% else %}
+                <span class="text-danger">
+                    <i class="fa fa-caret-up me-1"></i>
+                {% endif %}
+                <span>{{ ing.carb }}</span></span>
+            </td>
+            <td>
+                {% if ingr.fat > ing.fat %}
+                <span class="text-success">
+                    <i class="fa fa-caret-down me-1"></i>
+                {% else %}
+                <span class="text-danger">
+                    <i class="fa fa-caret-up me-1"></i>
+                {% endif %}
+                <span>{{ ing.fat }}</span></span>
+            </td>
+            <td>
+                {% if ingr.sugar > ing.sugar %}
+                <span class="text-success">
+                    <i class="fa fa-caret-down me-1"></i>
+                {% else %}
+                <span class="text-danger">
+                    <i class="fa fa-caret-up me-1"></i>
+                {% endif %}
+                <span>{{ ing.sugar }}</span></span>
+            </td> -->
+            <td>{{ comp }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- <br> -->
+      <!-- <small class="text-muted">* each nutritional value is given for 100g</small> -->
+    {% else %}
+        <p>No compatibilities found <i class="fa fa-frown-o"></i></p>
+    {% endif %}
+</article>
+{% elif ingr1.name %}
+<article class="media content-section">
+    <h3 class="mb-4">Compatibility between <em>{{ ingr1 }}</em> and <em>{{ ingr2 }}</em>:</h3>
+    {% if exists %}
+        <h1 class="text-center mb-4">{{ test_result }}%</h1>
+        <!-- <br/>
+        <table class="table table-hover text-nowrap mt-4">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Cals</th>
+                <th scope="col">Protein</th>
+                <th scope="col">Carb</th>
+                <th scope="col">Fat</th>
+                <th scope="col">Sugar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">{{ ingr1.name }}</th>
+                <td>
+                    {% if ingr2.cals > ingr1.cals %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr2.cals == ingr1.cals %}
+                    <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr1.cals }}</span></span>
+                </td>
+                <td>
+                    {% if ingr2.protein > ingr1.protein %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr2.protein == ingr1.protein %}
+                    <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr1.protein }}</span></span>
+                </td>
+                <td>
+                    {% if ingr2.carb > ingr1.carb %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr2.carb == ingr1.carb %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr1.carb }}</span></span>
+                </td>
+                <td>
+                    {% if ingr2.fat > ingr1.fat %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr2.fat == ingr1.fat %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr1.fat }}</span></span>
+                </td>
+                <td>
+                    {% if ingr2.sugar > ingr1.sugar %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr2.sugar == ingr1.sugar %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr1.sugar }}</span></span>
+                </td>
+              </tr><tr>
+                <th scope="row">{{ ingr2.name }}</th>
+                <td>
+                    {% if ingr1.cals > ingr2.cals %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr1.cals == ingr2.cals %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr2.cals }}</span></span>
+                </td>
+                <td>
+                    {% if ingr1.protein > ingr2.protein %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr1.protein == ingr2.protein %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr2.protein }}</span></span>
+                </td>
+                <td>
+                    {% if ingr1.carb > ingr2.carb %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr1.carb == ingr2.carb %}
+                        <span class="text-dark">=            
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr2.carb }}</span></span>
+                </td>
+                <td>
+                    {% if ingr1.fat > ingr2.fat %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr1.fat == ingr2.fat %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr2.fat }}</span></span>
+                </td>
+                <td>
+                    {% if ingr1.sugar > ingr2.sugar %}
+                    <span class="text-success">
+                        <i class="fa fa-caret-down me-1"></i>
+                    {% elif ingr1.sugar == ingr2.sugar %}
+                        <span class="text-dark">= 
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-caret-up me-1"></i>
+                    {% endif %}
+                    <span>{{ ingr2.sugar }}</span></span>
+                </td>
+              </tr>
+            </tbody>
+          </table> -->
+          <!-- <br>
+          <small class="text-muted">* each nutritional value is given for 100g</small> -->
+    {% else %}
+        <p>Compatibility could not be calculated <i class="fa fa-frown-o"></i></p>
+    {% endif %}
+</article>
+{% endif %}
+{% endblock content %}
+
+{% block custom_js %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'perfume/js/fragrances_get_similarity.js' %}"></script>
+{% endblock %}

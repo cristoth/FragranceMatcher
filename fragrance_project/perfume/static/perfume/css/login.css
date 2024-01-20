@@ -1,0 +1,17 @@
+section {
+    height: 85vh;
+}
+
+form {
+    width: 23rem;
+}
+
+h3 {
+    letter-spacing: 1px;
+}
+
+img {
+    object-fit: cover;
+    object-position: left;
+    height: 88vh;
+}

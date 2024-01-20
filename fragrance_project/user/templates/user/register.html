@@ -1,0 +1,26 @@
+{% extends "perfume/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}   <!-- added security for DJANGO -->
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Join Today</legend>
+            {{ form|crispy }}  
+        </fieldset>
+        <div class="form-group mt-4 pb-1 row">
+            <!-- for already existing users -->
+            <div class="col-md-6">
+                <small class="text-muted">
+                    Already have an account?
+                    <a class="ms-2 link-success" href="{% url 'login' %}">Log in</a>
+                </small>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-outline-info" type="submit">Sign up</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

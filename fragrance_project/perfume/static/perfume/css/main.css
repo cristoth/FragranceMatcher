@@ -1,0 +1,160 @@
+:root {
+  --primary: #3f1445;
+  --primary-lighter: #541464;
+  --info: #ab43c5;
+  --white: #fafafa;
+  /* --background-body: #f7f7f7; */
+  /* --background-content: #ffffff; */
+  /* --background-body: #8bc9a55b; */
+  --background-content: #ffffffdd;
+}
+
+
+body {
+    /* background: var(--background-body); */
+    background: rgb(214, 214, 214);
+    background: linear-gradient(90deg, rgba(201, 181, 209, 0.634) 0%, rgba(250,250,250,1) 100%);
+    color: #333333;
+    margin-top: 5.5rem;
+  }
+  
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+  
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: var(--primary);
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #d4cbdb;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {  /* HERE */
+  background: var(--background-content);
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.perfume-title {
+  color: #444444;
+}
+
+a.perfume-title:hover {
+  color: #b443c5;
+  text-decoration: none;
+}
+
+.perfume-content {
+  white-space: pre-line;
+}
+
+.perfume-img {
+  height: 50px;
+  width: 50px;
+  margin-right: 16px;
+}
+
+.perfume-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.perfume-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.perfume-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.author{
+  color: #722286;
+  /* text-decoration: none; */
+}
+
+.hidden{
+  display: none;
+}
+
+
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-lighter);
+}
+
+.btn-primary:disabled{
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: var(--white);
+}
+
+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary:visited {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.btn-info, .btn-info:active, .btn-info:visited {
+  background-color: var(--info);
+  border-color: var(--info);
+}
+
+.btn-info:hover, .btn-info:focus {
+  background-color: var(--primary-lighter);
+}
+
+.btn-outline-info, .btn-outline-info:active, .btn-outline-info:visited {
+  border-color: var(--info);
+  color: var(--info);
+}
+
+.btn-outline-info:hover, .btn-outline-info:focus{
+  background-color: var(--info);
+  color: var(--white);
+}
+
+a.link-pr {
+  color: var(--info);
+}
+
+a:hover.link-pr {
+  color: var(--primary-lighter);
+}

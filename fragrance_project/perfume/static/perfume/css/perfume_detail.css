@@ -1,0 +1,31 @@
+.info-box {
+    margin: 7px 0;
+    /* background-color: rgb(214,214,214); */
+    padding: 30px 40px;
+    border-radius: 5px;
+    border: 2px rgba(214, 214, 214, 0.5) solid;
+}
+
+.info-box p {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #d5dadb;
+}
+
+.info-box p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.rounded {
+    border-radius: 5px !important;
+}

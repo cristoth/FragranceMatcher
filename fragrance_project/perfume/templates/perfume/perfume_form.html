@@ -1,0 +1,40 @@
+{% extends "perfume/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+
+{% block content %}
+<div class="content-section">
+    <form id="perfume-form" method="POST" enctype="multipart/form-data">  <!-- enctype - used for saving img in the background -->
+        {% csrf_token %}   <!-- added security for DJANGO -->
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Perfume</legend>
+            {{ perfume_form|crispy }}  
+
+            <legend class="border-bottom mt-4">Fragrances</legend>
+            {{ perfume_fragrance_formset.management_form}}
+            <div id="fragrance-form-list">
+            {% for form in perfume_fragrance_formset %}
+                <!-- <div class="fragrance-form"> -->
+                <div>
+                {% crispy form %}
+                <!-- <button class="align-self-center btn btn-danger delete-image-form">-</button> -->
+                </div>
+            {% endfor %}
+            </div>
+
+            <div id="empty-form" class="hidden">{% crispy perfume_fragrance_formset.empty_form %}</div>
+            <button id="add-more" type="button" class="btn btn-primary">+</button>
+            </fieldset>
+        <div class="form-group text-end mt-2 me-4">
+            <button class="btn btn-outline-primary" type="submit">Post</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+
+{% block custom_js %}
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<script src="{% static 'perfume/js/perfume_add_fragrance.js' %}"></script>
+<!-- <script src="{% static 'perfume/js/perfume_delete_fragrance.js' %}"></script> -->
+{% endblock %}

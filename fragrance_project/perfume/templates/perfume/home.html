@@ -1,0 +1,105 @@
+{% extends "perfume/base.html" %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'perfume/css/perfume_list.css' %}">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+{% endblock %}
+
+{% block content %}
+{% for rec in perfumes %}
+    {% if forloop.counter0|divisibleby:"2" %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="card border-0" >
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-8">
+                            <div class="perfume-metadata d-flex">
+                                <img class="rounded-circle perfume-img" src="{{ rec.author.profile.image.url }}" alt="{{ rec.author.username }}'s profile picture">
+                                <p class="pe-3 pb-3 pt-3 author">{{ rec.author }}</p>
+                                <small class="ms-auto p-3 text-muted ">{{ rec.date_posted|date:"F d, Y" }}</small>
+                            </div>
+                            <div class="card-body">
+                                <h2><a class="perfume-title card-title" href="{% url 'perfume-detail' rec.id %}">{{ rec.name }}</a></h2>
+                                <!-- <p class="perfume-content card-text">Target: {{ rec.target }}</p> -->
+                                <p class="perfume-content card-text">{{ rec.description|slice:":255" }}...</p>
+                                <!-- <p class="perfume-content card-text">Servings: {{ rec.servings }} | Cals: {{ rec.cals }}| Protein: {{ rec.protein }} | Carb: {{ rec.carb }}  | Fat: {{ rec.fat }} | Sugar: {{ rec.sugar }}</p> -->
+                                <!-- <a href="{% url 'perfume-detail' rec.id %}" class="btn btn-outline-primary">See more</a> -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{{ rec.image.url }}" alt="Perfume image" class="rounded card-img"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    {% else %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="card border-0" >
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-4">
+                            <img src="{{ rec.image.url }}" alt="Perfume image" class="rounded card-img"/>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="perfume-metadata d-flex">
+                                <small class="p-3 text-muted ">{{ rec.date_posted|date:"F d, Y" }}</small>
+                                <img class="ms-auto rounded-circle perfume-img" src="{{ rec.author.profile.image.url }}" alt="{{ rec.author.username }}'s profile picture">
+                                <p class="pe-3 pb-3 pt-3 author">{{ rec.author }}</p>
+                            </div>
+                            <div class="card-body">
+                                <h2 class="text-end"><a class="perfume-title card-title" href="{% url 'perfume-detail' rec.id %}">{{ rec.name }}</a></h2>
+                                <!-- <p class="perfume-content card-text text-end">Target: {{ rec.target }}</p> -->
+                                <p class="perfume-content card-text text-end">{{ rec.description|slice:":255" }}...</p>
+                                <!-- <p class="perfume-content card-text text-end">Servings: {{ rec.servings }} | Cals: {{ rec.cals }}| Protein: {{ rec.protein }} | Carb: {{ rec.carb }}  | Fat: {{ rec.fat }} | Sugar: {{ rec.sugar }}</p> -->
+                                <!-- <a href="{% url 'perfume-detail' rec.id %}" class="btn btn-outline-primary">See more</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    {% endif %}
+{% empty %}
+    <div class="media-body">No perfumes yet 😳</div>
+{% endfor %}
+
+<!-- Pagination -->
+{% if is_paginated %}
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li><a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            <!-- <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">&lt;</a>  -->
+        {% else %}
+            <li><a class="btn btn-outline-primary mb-4 disabled" href="?page=1">&laquo;</a></li>
+        {% endif %}
+
+        {% if page_obj.number|add:'-4' >= 1 %}
+            <li><a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.number|add:'-4' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for nr in page_obj.paginator.page_range %}
+            {% if page_obj.number == nr %}
+                <li><a class="btn btn-primary mb-4" href="?page={{ nr }}">{{ nr }}</a></li>
+            {% elif nr > page_obj.number|add:'-3' and nr < page_obj.number|add:'3' %}
+                <li><a class="btn btn-outline-primary mb-4" href="?page={{ nr }}">{{ nr }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.paginator.num_pages >= page_obj.number|add:'4' %}
+            <li><a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.number|add:'4' }}">&hellip;</a></li>
+        {% endif %}
+        
+        {% if page_obj.has_next %}
+            <!-- <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">&gt;</a> -->
+            <li><a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+            <!-- <li><a class="btn btn-outline-primary mb-4 disabled" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li> -->
+            <li><a class="btn btn-outline-primary mb-4 disabled" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+{% endblock content %}
